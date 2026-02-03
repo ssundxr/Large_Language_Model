@@ -1,0 +1,39 @@
+import numpy as np
+
+text = "Every moment is a beginning"
+tokens = text.lower().split()
+
+vocab = {word: idx+10000 for idx, word in enumerate(tokens)}
+token_ids = [vocab[token] for token in tokens]
+
+d_model = 8
+np.random.seed(42)
+
+word_embeddings = {
+    word: np.random.rand(d_model)
+    for word in vocab
+}
+
+def positional_encoding(seq_len, d_model):
+    pos = np.arange(seq_len)[:, None]
+    i = np.arange(d_model)[None, :]
+    angle_rates = 1 / np.power(10000, (2 * (i // 2)) / d_model)
+    angles = pos * angle_rates
+
+    pe = np.zeros_like(angles)
+    pe[:, 0::2] = np.sin(angles[:, 0::2])
+    pe[:, 1::2] = np.cos(angles[:, 1::2])
+    return pe
+
+positional_embeddings = positional_encoding(len(tokens), d_model)
+
+print("\nFINAL TOKEN REPRESENTATION\n")
+
+for i, token in enumerate(tokens):
+    print(f"Token: {token}")
+    print(f"Token ID: {vocab[token]}")
+    print("Word Embedding:", word_embeddings[token])
+    print("Positional Embedding:", positional_embeddings[i])
+    print("Final Embedding (Token + Position):",
+          word_embeddings[token] + positional_embeddings[i])
+    print("-" * 60)
