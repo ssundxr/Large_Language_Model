@@ -14,4 +14,6 @@
 
 27-01-2026 - Encoder - Decoder only model (without api) && with api(mymemory_api) for Language Translation 
 
+03/02/2026 - Implement input pipeline for LLM architecture
+
         
